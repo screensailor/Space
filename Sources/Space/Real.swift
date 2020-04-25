@@ -1,6 +1,12 @@
-extension Real where Self: BinaryFloatingPoint, Self.RawSignificand: FixedWidthInteger {
+extension Real where Self: BinaryFloatingPoint, RawSignificand: FixedWidthInteger {
     
-    @inlinable public static func random(between: Self, and: Self) -> Self {
-        .random(in: between < and ? between...and : and...between)
+    @inlinable public static func random(
+        in range: ClosedRange<Self>,
+        median: Self,
+        power exp: Self
+    ) -> Self {
+        random(in: range, median: median, by: { .pow($0, exp) })
     }
 }
+
+
