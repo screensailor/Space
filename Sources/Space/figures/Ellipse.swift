@@ -1,35 +1,43 @@
-public struct Ellipse<Point>: EllipseInSpace
-    where Point: PointInSpace
-{
-    public typealias R = Point.R
+public protocol EllipseSpace {
+    associatedtype Point: PointInSpace where Self.Point.D == Self
+}
+
+extension EllipseSpace where Self: Real {
+    public typealias Point = Space.Point<Self>
+}
+
+extension Float: EllipseSpace {}
+extension Double: EllipseSpace {}
+
+public struct Ellipse<In: EllipseSpace>: EllipseInSpace {
+    
+    public typealias D = In
+    public typealias Point = In.Point
     
     public var center: Point
+    public var radius: (x: D, y: D)
     
-    public var xRadius: R
-    public var yRadius: R
-    
-    public init(center: Point = .zero, xRadius: R, yRadius: R) {
+    public init(center: Point = .zero, radius: (x: D, y: D) = (0, 0)) {
         self.center = center
-        self.xRadius = xRadius
-        self.yRadius = yRadius
+        self.radius = radius
     }
 }
 
 public protocol EllipseInSpace {
     
-    associatedtype R
-    associatedtype Point: PointInSpace where Point.R == R
+    associatedtype D
+    associatedtype Point: PointInSpace where Point.D == D
     
     var center: Point { get set }
+    var radius: (x: D, y: D) { get set }
     
-    var xRadius: R { get set }
-    var yRadius: R { get set }
-    
-    init(center: Point, xRadius: R, yRadius: R)
+    init(center: Point, radius: (x: D, y: D))
 }
 
 extension EllipseInSpace {
-    @inlinable public var xDiameter: R { xRadius * 2 }
-    @inlinable public var yDiameter: R { yRadius * 2 }
+    
+    @inlinable public func size<A>() -> A where A: SizeInSpace, A.D == D {
+        A(width: radius.x * 2, height: radius.y * 2)
+    }
 }
 

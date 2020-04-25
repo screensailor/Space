@@ -1,10 +1,9 @@
-public struct Size<R>: SizeInSpace
-    where R: Real
-{
-    public var width: R
-    public var height: R
+public struct Size<D: Real>: SizeInSpace {
     
-    public init(width: R = 0, height: R = 0) {
+    public var width: D
+    public var height: D
+    
+    public init(width: D = 0, height: D = 0) {
         self.width = width
         self.height = height
     }
@@ -12,29 +11,29 @@ public struct Size<R>: SizeInSpace
 
 public protocol SizeInSpace: Real2D {
     
-    var width: R { get set }
-    var height: R { get set }
+    var width: D { get set }
+    var height: D { get set }
     
-    init(width: R, height: R)
+    init(width: D, height: D)
 }
 
 extension SizeInSpace {
-    @inlinable public var tuple: (R, R) { (width, height) }
-    @inlinable public init(_ tuple: (R, R)) { self.init(width: tuple.0, height: tuple.1) }
+    @inlinable public var tuple: (D, D) { (width, height) }
+    @inlinable public init(_ tuple: (D, D)) { self.init(width: tuple.0, height: tuple.1) }
 }
 
 extension SizeInSpace {
-    @inlinable public init(square length: R) { self.init(width: length, height: length) }
+    @inlinable public init(square length: D) { self.init(width: length, height: length) }
 }
 
 extension SizeInSpace {
-    @inlinable public var area: R { width * height }
+    @inlinable public var area: D { width * height }
 }
 
-extension SizeInSpace where R: BinaryFloatingPoint, R.RawSignificand: FixedWidthInteger {
+extension SizeInSpace where D: BinaryFloatingPoint, D.RawSignificand: FixedWidthInteger {
     
     @inlinable public func randomPoint<Point>(_ type: Point.Type = Point.self) -> Point
-        where Point: PointInSpace, Point.R == R
+        where Point: PointInSpace, Point.D == D
     {
         Point(
             x: .random(in: width < 0 ? width ... 0 : 0 ... width),

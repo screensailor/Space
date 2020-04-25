@@ -11,7 +11,7 @@ extension Sequence where Element: PointInSpace {
             else { ºsum = e }
         }
         guard let sum = ºsum else { return nil }
-        return sum / Point.R(count)
+        return sum / Point.D(count)
     }
 
     public func convexHull() -> [Point] {

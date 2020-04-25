@@ -1,12 +1,23 @@
-public struct Circle<Point>: CircleInSpace
-    where Point: PointInSpace
-{
-    public typealias R = Point.R
+public protocol CircleSpace {
+    associatedtype Point: PointInSpace where Self.Point.D == Self
+}
+
+extension CircleSpace where Self: Real {
+    public typealias Point = Space.Point<Self>
+}
+
+extension Float: CircleSpace {}
+extension Double: CircleSpace {}
+
+public struct Circle<In: CircleSpace>: CircleInSpace {
+    
+    public typealias D = In
+    public typealias Point = In.Point
     
     public var center: Point
-    public var radius: R
+    public var radius: D
     
-    public init(center: Point = .zero, radius: R = 0) {
+    public init(center: Point = .zero, radius: D = 0) {
         self.center = center
         self.radius = radius
     }
@@ -14,18 +25,27 @@ public struct Circle<Point>: CircleInSpace
 
 public protocol CircleInSpace {
     
-    associatedtype R
-    associatedtype Point: PointInSpace where Point.R == R
+    associatedtype D
+    associatedtype Point: PointInSpace where Point.D == D
     
     var center: Point { get set }
-    var radius: R { get set }
+    var radius: D { get set }
     
-    init(center: Point, radius: R)
+    init(center: Point, radius: D)
 }
 
 extension CircleInSpace {
     
-    @inlinable public func scaled(to scale: R) -> Self {
+    @inlinable public var diameter: D { radius * 2 }
+    
+    @inlinable public func size<A>() -> A where A: SizeInSpace, A.D == D {
+        A(width: radius * 2, height: radius * 2)
+    }
+}
+
+extension CircleInSpace {
+    
+    @inlinable public func scaled(to scale: D) -> Self {
         .init(center: center, radius: radius * scale)
     }
 
@@ -33,21 +53,21 @@ extension CircleInSpace {
         point.distance(to: center) <= radius
     }
     
-    @inlinable public func point(at θ: R) -> Point {
-        Point(x: .cos(θ), y: .sin(θ)) * radius + center
+    @inlinable public func point<A>(at θ: D) -> A where A: PointInSpace, A.D == D {
+        A(x: .cos(θ), y: .sin(θ)) * radius + center
     }
 }
 
-extension CircleInSpace where R.Stride == R {
+extension CircleInSpace where D.Stride == D {
     
-    public func points(count: Int, startingFrom θ: R = 0) -> [Point] {
-        count > 0 ? stride(from: θ, to: θ + 2 * .π, by: 2 * .π / R(count)).map(point(at:)) : []
+    public func points<A>(count: Int, startingFrom θ: D = 0) -> [A] where A: PointInSpace, A.D == D {
+        count > 0 ? stride(from: θ, to: θ + 2 * .π, by: 2 * .π / D(count)).map(point(at:)) : []
     }
 }
 
-extension CircleInSpace where R: BinaryFloatingPoint, R.RawSignificand: FixedWidthInteger {
+extension CircleInSpace where D: BinaryFloatingPoint, D.RawSignificand: FixedWidthInteger {
     
-    @inlinable public func randomPoint(in range: ClosedRange<R> = 1 ± .π) -> Point {
+    @inlinable public func randomPoint<A>(in range: ClosedRange<D> = 1 ± .π) -> A where A: PointInSpace, A.D == D {
         point(at: .random(in: range))
     }
 }

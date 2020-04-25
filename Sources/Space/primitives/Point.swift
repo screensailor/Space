@@ -1,10 +1,9 @@
-public struct Point<R>: PointInSpace
-    where R: Real
-{
-    public var x: R
-    public var y: R
+public struct Point<D: Real>: PointInSpace {
     
-    public init(x: R = 0, y: R = 0) {
+    public var x: D
+    public var y: D
+    
+    public init(x: D = 0, y: D = 0) {
         self.x = x
         self.y = y
     }
@@ -12,26 +11,26 @@ public struct Point<R>: PointInSpace
 
 public protocol PointInSpace: Real2D {
     
-    var x: R { get set }
-    var y: R { get set }
+    var x: D { get set }
+    var y: D { get set }
     
-    init(x: R, y: R)
+    init(x: D, y: D)
 }
 
 extension PointInSpace {
-    @inlinable public var tuple: (R, R) { (x, y) }
-    @inlinable public init(_ tuple: (R, R)) { self.init(x: tuple.0, y: tuple.1) }
+    @inlinable public var tuple: (D, D) { (x, y) }
+    @inlinable public init(_ tuple: (D, D)) { self.init(x: tuple.0, y: tuple.1) }
 }
 
 extension PointInSpace {
-    @inlinable public func angle(to other: Self) -> R { (other - self).direction() }
-    @inlinable public func distance(to other: Self) -> R { (other - self).magnitude() }
+    @inlinable public func angle(to other: Self) -> D { (other - self).direction() }
+    @inlinable public func distance(to other: Self) -> D { (other - self).magnitude() }
 }
 
 extension PointInSpace {
     
-    @inlinable public func point(at θ: R, distance: R) -> Self {
-        .init(x: .cos(θ), y: .sin(θ)) * distance + self
+    @inlinable public func point<A>(at θ: D, distance: D) -> A where A: PointInSpace, A.D == D {
+        A(x: .cos(θ), y: .sin(θ)) * distance + self
     }
 }
 

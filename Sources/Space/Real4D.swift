@@ -1,6 +1,6 @@
 public protocol Real4D: Equatable {
-    associatedtype R: Real
-    var tuple: (R, R, R, R) { get }
-    init(_: (R, R, R, R))
+    associatedtype D: Real
+    var tuple: (D, D, D, D) { get }
+    init(_: (D, D, D, D))
 }
 
