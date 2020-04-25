@@ -1,5 +1,13 @@
+extension ClosedRange: Real2D where Bound: Real {
+    @inlinable public var tuple: (Bound, Bound) { (lowerBound, upperBound) }
+    @inlinable public init(_ tuple: (Bound, Bound)) { self = tuple.0 ... tuple.1 }
+    @inlinable public var range: ClosedRange<R> { self }
+    @inlinable public var min: Bound { lowerBound }
+    @inlinable public var max: Bound { upperBound }
+}
+
 extension ClosedRange where Bound: AdditiveArithmetic {
-    @inlinable public var size: Bound { upperBound - lowerBound }
+    @inlinable public var span: Bound { upperBound - lowerBound }
 }
 
 extension ClosedRange {
