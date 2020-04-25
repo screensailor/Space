@@ -38,8 +38,10 @@ extension CircleInSpace {
     
     @inlinable public var diameter: D { radius * 2 }
     
-    @inlinable public func size<A>() -> A where A: SizeInSpace, A.D == D {
-        A(width: radius * 2, height: radius * 2)
+    @inlinable public func size<Size>(as: Size.Type = Size.self) -> Size where
+        Size: SizeInSpace, Size.D == D
+    {
+        Size(width: radius * 2, height: radius * 2)
     }
 }
 
@@ -53,21 +55,27 @@ extension CircleInSpace {
         point.distance(to: center) <= radius
     }
     
-    @inlinable public func point<A>(at θ: D) -> A where A: PointInSpace, A.D == D {
-        A(x: .cos(θ), y: .sin(θ)) * radius + center
+    @inlinable public func point<Point>(at θ: D, as: Point.Type = Point.self) -> Point where
+        Point: PointInSpace, Point.D == D
+    {
+        Point(x: .cos(θ), y: .sin(θ)) * radius + center
     }
 }
 
 extension CircleInSpace where D.Stride == D {
     
-    public func points<A>(count: Int, startingFrom θ: D = 0) -> [A] where A: PointInSpace, A.D == D {
-        count > 0 ? stride(from: θ, to: θ + 2 * .π, by: 2 * .π / D(count)).map(point(at:)) : []
+    public func points<Point>(count: Int, startingFrom θ: D = 0, as: [Point].Type = [Point].self) -> [Point] where
+        Point: PointInSpace, Point.D == D
+    {
+        count > 0 ? stride(from: θ, to: θ + 2 * .π, by: 2 * .π / D(count)).map{ point(at: $0, as: Point.self) } : []
     }
 }
 
 extension CircleInSpace where D: BinaryFloatingPoint, D.RawSignificand: FixedWidthInteger {
     
-    @inlinable public func randomPoint<A>(in range: ClosedRange<D> = 1 ± .π) -> A where A: PointInSpace, A.D == D {
+    @inlinable public func randomPoint<Point>(in range: ClosedRange<D> = 1 ± .π, as: Point.Type = Point.self) -> Point where
+        Point: PointInSpace, Point.D == D
+    {
         point(at: .random(in: range))
     }
 }

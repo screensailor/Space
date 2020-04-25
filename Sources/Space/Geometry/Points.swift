@@ -32,7 +32,7 @@ extension Sequence where Element: PointInSpace {
         return vertices
     }
     
-    public func lineSegments<Line>(closed: Bool, _: [Line].Type = [Line].self) -> [Line]
+    public func lineSegments<Line>(closed: Bool, as: [Line].Type = [Line].self) -> [Line]
         where Line: LineSegmentInSpace, Line.Point == Point
     {
         var ºfirst: Point?

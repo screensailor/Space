@@ -33,7 +33,9 @@ extension LineSegmentInSpace {
 
 extension LineSegmentInSpace {
     
-    public func intersection<A>(with other: Self) -> A? where A: PointInSpace, A.D == D {
+    public func intersection<Point, Line>(with other: Line, as: Point.Type = Point.self) -> Point?
+        where Point: PointInSpace, Point.D == D, Line: LineSegmentInSpace, Line.D == D
+    {
         let (a, b, c, d) = (slope(), yIntercept(), other.slope(), other.yIntercept())
         let x = (d - b) / (a - c)
         let y = a * x + b
@@ -44,7 +46,7 @@ extension LineSegmentInSpace {
             x.isBetween(other.start.x, and: other.end.x)
             else
         { return nil }
-        return A(x: x, y: y)
+        return Point(x: x, y: y)
     }
 }
 
