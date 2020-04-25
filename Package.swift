@@ -14,7 +14,7 @@ let package = Package(
         .library(name: "Space", targets: ["Space"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-numerics.git", .branch("master")),
+        .package(url: "https://github.com/apple/swift-numerics.git", .upToNextMajor(from: "0.0.5")),
     ],
     targets: [
         .target(
