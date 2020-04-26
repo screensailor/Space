@@ -1,4 +1,19 @@
-public struct Scale<X: FloatingPoint> {
+extension Scale {
+    
+    @inlinable public func linear(_ x: X) -> X {
+        scale(x){ x in x }
+    }
+    
+    @inlinable public func pow(_ x: X, exp: X = 2) -> X {
+        scale(x){ x in pow(x, exp: exp) }
+    }
+    
+    @inlinable public func sin(_ x: X) -> X {
+        scale(x){ x in sin((x - 0.5) * .pi) * 0.5 + 0.5}
+    }
+}
+
+public struct Scale<X: BinaryFloatingPoint> {
     
     public var domain: [X] { didSet { update() } }
     public var domainUsed: [X] { map.map { $0.domain } }
@@ -44,17 +59,3 @@ public struct Scale<X: FloatingPoint> {
     }
 }
 
-extension Scale {
-    
-    public func linear(_ x: X) -> X {
-        scale(x){ x in x }
-    }
-    
-    public func pow(_ x: X, exp: X = 2) -> X {
-        scale(x){ x in pow(x, exp: exp) }
-    }
-    
-    public func sin(_ x: X) -> X {
-        scale(x){ x in sin((x - 1 / 2) * .pi) / 2 + 1 / 2}
-    }
-}
