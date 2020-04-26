@@ -29,8 +29,10 @@ extension PointInSpace {
 
 extension PointInSpace {
     
-    @inlinable public func point<A>(at θ: D, distance: D) -> A where A: PointInSpace, A.D == D {
-        A(x: .cos(θ), y: .sin(θ)) * distance + self
+    @inlinable public func point<Point>(at θ: D, distance: D, as: Point.Type = Point.self) -> Point where
+        Point: PointInSpace, Point.D == D
+    {
+        Point(x: .cos(θ), y: .sin(θ)) * distance + self
     }
 }
 

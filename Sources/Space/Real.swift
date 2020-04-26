@@ -9,4 +9,9 @@ extension Real where Self: BinaryFloatingPoint, RawSignificand: FixedWidthIntege
     }
 }
 
-
+extension Real where Self: BinaryFloatingPoint {
+    
+    @inlinable public func cast<Other>(to: Other.Type = Other.self) -> Other where Other: BinaryFloatingPoint {
+        Other(self)
+    }
+}

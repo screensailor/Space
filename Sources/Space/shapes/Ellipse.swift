@@ -34,6 +34,14 @@ public protocol EllipseInSpace {
     init(center: Point, radius: (x: D, y: D))
 }
 
+extension EllipseInSpace where D: BinaryFloatingPoint {
+    
+    @inlinable public func cast<Other>(to: Other.Type = Other.self) -> Other where Other: EllipseInSpace, Other.D: BinaryFloatingPoint {
+        let (rx, ry) = radius
+        return .init(center: center.cast(), radius: (rx.cast(), ry.cast()))
+    }
+}
+
 extension EllipseInSpace {
     
     @inlinable public func size<A>() -> A where A: SizeInSpace, A.D == D {
