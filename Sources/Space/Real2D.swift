@@ -86,8 +86,6 @@ extension Real2D {
 extension Real2D {
     @inlinable public func map<T>(_ ƒ: (D) -> T) -> (T, T) { let (a, b) = tuple; return (ƒ(a), ƒ(b)) }
     @inlinable public func map(_ ƒ: (D) -> D) -> Self { let (a, b) = tuple; return Self((ƒ(a), ƒ(b))) }
-    @inlinable public func magnitude() -> D { D.hypot(tuple.0, tuple.1) }
-    @inlinable public func direction() -> D { D.atan2(y: tuple.1, x: tuple.0) }
     @inlinable public func sorted(_ areSorted: (D, D) -> Bool) -> Self {
         areSorted(tuple.0, tuple.1) ? self : .init((tuple.1, tuple.0))
     }
@@ -99,6 +97,13 @@ extension Real2D where D: BinaryFloatingPoint {
         let (a, b) = tuple
         return Other((a.cast(), b.cast()))
     }
+}
+
+extension Real2D {
+    @inlinable public var span: D { max - min }
+    @inlinable public var ratio: D { tuple.0 / tuple.1 }
+    @inlinable public func magnitude() -> D { D.hypot(tuple.0, tuple.1) }
+    @inlinable public func direction() -> D { D.atan2(y: tuple.1, x: tuple.0) }
 }
 
 extension Real2D {
