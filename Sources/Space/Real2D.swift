@@ -120,3 +120,21 @@ extension Real2D {
         (self - b).crossProduct(with: a - b)
     }
 }
+
+@inlinable public func + <X: Real>(l: (X, X), r: X) -> (X, X) { apply(+, to: l, and: r) }
+@inlinable public func - <X: Real>(l: (X, X), r: X) -> (X, X) { apply(-, to: l, and: r) }
+@inlinable public func * <X: Real>(l: (X, X), r: X) -> (X, X) { apply(*, to: l, and: r) }
+@inlinable public func / <X: Real>(l: (X, X), r: X) -> (X, X) { apply(/, to: l, and: r) }
+
+@inlinable public func apply<X, Y>(_ ƒ: (X, X) -> Y, to l: (X, X), and r: X) -> (Y, Y) {
+    (ƒ(l.0, r), ƒ(l.1, r))
+}
+
+@inlinable public func + <X: Real>(l: (X, X), r: (X, X)) -> (X, X) { apply(+, to: l, and: r) }
+@inlinable public func - <X: Real>(l: (X, X), r: (X, X)) -> (X, X) { apply(-, to: l, and: r) }
+@inlinable public func * <X: Real>(l: (X, X), r: (X, X)) -> (X, X) { apply(*, to: l, and: r) }
+@inlinable public func / <X: Real>(l: (X, X), r: (X, X)) -> (X, X) { apply(/, to: l, and: r) }
+
+@inlinable public func apply<X, Y>(_ ƒ: (X, X) -> Y, to l: (X, X), and r: (X, X)) -> (Y, Y) {
+    (ƒ(l.0, r.0), ƒ(l.1, r.1))
+}

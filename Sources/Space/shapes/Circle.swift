@@ -67,7 +67,9 @@ extension CircleInSpace where D.Stride == D {
     public func points<Point>(count: Int, startingFrom θ: D = 0, as: [Point].Type = [Point].self) -> [Point] where
         Point: PointInSpace, Point.D == D
     {
-        count > 0 ? stride(from: θ, to: θ + 2 * .π, by: 2 * .π / D(count)).map{ point(at: $0, as: Point.self) } : []
+        guard count > 0 else { return [] }
+        let x = stride(from: θ, to: θ + 2 * .π, by: 2 * .π / D(count))
+        return x.map{ point(at: $0, as: Point.self) }
     }
 }
 
