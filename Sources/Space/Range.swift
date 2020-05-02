@@ -11,6 +11,12 @@ extension ClosedRange where Bound: AdditiveArithmetic {
 }
 
 extension ClosedRange {
+    public init(between: Bound, and: Bound) {
+        self = between < and ? between ... and : and ... between
+    }
+}
+
+extension ClosedRange {
     
     @inlinable public func clamped(to range: PartialRangeFrom<Bound>) -> Self {
         clamped(to: range.lowerBound ... Swift.max(upperBound, range.lowerBound))
