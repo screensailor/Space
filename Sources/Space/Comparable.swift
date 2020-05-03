@@ -16,6 +16,10 @@ extension Comparable {
         (self...self).clamped(to: range).lowerBound
     }
     
+    @inlinable public func clamped(to range: PartialRangeUpTo<Self>) -> Self {
+        (self..<self).clamped(to: range).lowerBound
+    }
+    
     @inlinable public func clamped(to range: PartialRangeThrough<Self>) -> Self {
         (self...self).clamped(to: range).lowerBound
     }

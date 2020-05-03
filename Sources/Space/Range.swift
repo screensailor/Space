@@ -38,9 +38,16 @@ extension ClosedRange {
     @inlinable public func clamped(to range: PartialRangeFrom<Bound>) -> Self {
         clamped(to: range.lowerBound ... Swift.max(upperBound, range.lowerBound))
     }
-    
+
     @inlinable public func clamped(to range: PartialRangeThrough<Bound>) -> Self {
         clamped(to: Swift.min(lowerBound, range.upperBound) ... range.upperBound)
+    }
+}
+
+extension Range {
+    
+    @inlinable public func clamped(to range: PartialRangeUpTo<Bound>) -> Self {
+        clamped(to: Swift.min(lowerBound, range.upperBound) ..< range.upperBound)
     }
 }
 
