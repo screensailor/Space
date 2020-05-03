@@ -18,6 +18,11 @@ extension BinaryFloatingPoint {
     @inlinable public var d: Double { Double(self) }
 }
 
+extension BinaryFloatingPoint {
+    @inlinable public var isEven: Bool { Int(self) % 2 == 0 }
+    @inlinable public var isOdd: Bool { Int(self) % 2 == 1 }
+}
+
 extension BinaryFloatingPoint where RawSignificand: FixedWidthInteger {
     
     @inlinable public static func random(between: Self, and: Self) -> Self {
@@ -26,6 +31,10 @@ extension BinaryFloatingPoint where RawSignificand: FixedWidthInteger {
 }
 
 extension BinaryFloatingPoint where RawSignificand: FixedWidthInteger {
+    
+    @inlinable public func random(withinDistance max: Self, by unitDistribution: (Self) -> Self) -> Self {
+        Self.random(in: self ± max, median: self, by: unitDistribution)
+    }
     
     public static func random(
         in range: ClosedRange<Self>,
