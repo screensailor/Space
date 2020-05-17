@@ -15,3 +15,10 @@ extension Real where Self: BinaryFloatingPoint {
         Other(self)
     }
 }
+
+extension Real {
+    
+    @inlinable public static func relu(_ x: Self) -> Self {
+        .maximum(0, x)
+    }
+}
