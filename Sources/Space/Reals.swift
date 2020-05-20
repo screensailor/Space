@@ -40,7 +40,12 @@ extension Collection where Element: Real {
     }
     
     public func sumToOneNormalized() -> [Element] {
-        guard let (min, max) = minMax(), min < max else { return Array(self) }
+        guard let (min, max) = minMax(), min < max else {
+            return Array(
+                repeating: Element(count).reciprocal ?? 0,
+                count: count
+            )
+        }
         let s = sum()
         return map{ $0 / s }
     }
