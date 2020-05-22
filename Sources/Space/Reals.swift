@@ -33,13 +33,12 @@ extension Collection where Element: Real {
         return (min, max)
     }
     
-    public func minMaxNormalized() -> [Element] {
-        guard let (min, max) = minMax(), min < max else { return Array(self) }
-        let range = max - min
-        return map{ ($0 - min) / range }
+    @available(*, deprecated, renamed: "scaledToSumOne")
+    @inlinable public func sumToOneNormalized() -> [Element] {
+        scaledToSumOne()
     }
-    
-    public func sumToOneNormalized() -> [Element] {
+
+    public func scaledToSumOne() -> [Element] {
         guard let (min, max) = minMax(), min < max else {
             return Array(
                 repeating: Element(count).reciprocal ?? 0,

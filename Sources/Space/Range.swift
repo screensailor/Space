@@ -57,8 +57,20 @@ extension Range {
     Swift.stride(from: range.lowerBound, through: range.upperBound, by: stride)
 }
 
+@inlinable public func stride<A>(over range: ClosedRange<A>, count: Int) -> StrideTo<A>
+    where A: BinaryFloatingPoint, A.Stride == A
+{
+    Swift.stride(from: range.lowerBound, to: range.upperBound, by: (range.upperBound - range.lowerBound) / A(count))
+}
+
 @inlinable public func stride<A>(over range: Range<A>, by stride: A.Stride) -> StrideTo<A>
     where A: Strideable
 {
     Swift.stride(from: range.lowerBound, to: range.upperBound, by: stride)
+}
+
+@inlinable public func stride<A>(over range: Range<A>, count: Int) -> StrideTo<A>
+    where A: BinaryFloatingPoint, A.Stride == A
+{
+    Swift.stride(from: range.lowerBound, to: range.upperBound, by: (range.upperBound - range.lowerBound) / A(count))
 }

@@ -1,10 +1,16 @@
 extension BinaryInteger {
+    @inlinable public var i: Int { Int(self) }
+    @inlinable public var u: UInt { UInt(self) }
+    @inlinable public var f: Float { Float(self) }
+    @inlinable public var d: Double { Double(self) }
+}
+
+extension BinaryInteger {
     
     @inlinable public func element<C>(in c: C) throws -> C.Element where C: Collection, C.Indices == Range<Self> {
         guard c.indices ~= self else { throw "Index \(self) out of bounds \(c.indices)".error() }
         return c[self]
     }
-    
 }
 
 extension BinaryInteger {
