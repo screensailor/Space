@@ -32,20 +32,11 @@ extension Collection where Element: Real {
         }
         return (min, max)
     }
-    
-    @available(*, deprecated, renamed: "scaledToSumOne")
-    @inlinable public func sumToOneNormalized() -> [Element] {
-        scaledToSumOne()
-    }
 
-    public func scaledToSumOne() -> [Element] {
-        guard let (min, max) = minMax(), min < max else {
-            return Array(
-                repeating: Element(count).reciprocal ?? 0,
-                count: count
-            )
-        }
+    public func scaledToSumOne() -> [Element]? {
+        guard let (min, max) = minMax(), min < max else { return nil }
         let s = sum()
+        guard s != 0 else { return nil }
         return map{ $0 / s }
     }
 }
