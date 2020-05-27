@@ -1,7 +1,8 @@
 extension SignedNumeric where Self: Comparable {
     
     @inlinable public var unitSign: Self { self < 0 ? -1 : 1 }
-    
+    @inlinable public var negated: Self { -self }
+
     @inlinable public static func ± (l: Self, r: Self) -> ClosedRange<Self> {
         (l - abs(r)) ... (l + abs(r))
     }
